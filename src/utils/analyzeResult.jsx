@@ -1,5 +1,3 @@
-// src/utils/analyzeResult.js
-
 export const traitGroups = {
   energy: ["calm", "withdraw", "renewal", "simplicity"],
   freedom: ["freedom", "independence", "growth", "explorer"],
