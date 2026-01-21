@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import questions from "./question";
-import { Button } from "react-bootstrap";
 
 function QuestionPage({ answers, setAnswers }) {
   const { id } = useParams();

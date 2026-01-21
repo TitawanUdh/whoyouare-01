@@ -1,7 +1,6 @@
 import {
   analyzeResult,
   resultNarrative,
-  resultText,
 } from "../utils/analyzeResult";
 import "./Result.css";
 const Result = ({ answers }) => {
