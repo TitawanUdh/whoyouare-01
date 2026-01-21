@@ -59,24 +59,28 @@ const Result = ({ answers, setAnswers }) => {
   }
 
   const handleSaveImage = async () => {
-  const element = document.getElementById("result-image");
+    const element = document.getElementById("result-image");
+    if (!element) return;
 
-  if (!element) return;
+    // 🔹 เข้าโหมด export
+    element.classList.add("export-mode");
 
-  const canvas = await html2canvas(element, {
-    scale: 2,              // เพิ่มความคม
-    useCORS: true,
-    backgroundColor: "#ffffff",
-  });
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#f3faef", // สำคัญมาก
+    });
 
-  const image = canvas.toDataURL("image/png");
+    // 🔹 ออกจากโหมด export
+    element.classList.remove("export-mode");
 
-  const link = document.createElement("a");
-  link.href = image;
-  link.download = "myself-result.png";
-  link.click();
-};
+    const image = canvas.toDataURL("image/png");
 
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "myself-result.png";
+    link.click();
+  };
 
   // 🔹 7. Render ปกติ
   return (
@@ -86,7 +90,6 @@ const Result = ({ answers, setAnswers }) => {
           <p className="result-label">ผลลัพธ์ของคุณ</p>
           <h2 className="result-title">{data.title}</h2>
         </div>
-
         {data.image && (
           <div className="d-flex justify-content-center">
             <Image
@@ -97,11 +100,9 @@ const Result = ({ answers, setAnswers }) => {
             />
           </div>
         )}
-
         <div className="result-story">
           <p>{data.story}</p>
         </div>
-
         <div className="result-section">
           <h4>🌱 จุดแข็ง</h4>
           <ul>
@@ -110,24 +111,22 @@ const Result = ({ answers, setAnswers }) => {
             ))}
           </ul>
         </div>
+        <div className="result-actions">
+          <button className="save-btn" onClick={handleSaveImage}>
+            บันทึก
+          </button>
 
-<div className="result-actions">
-  <button className="save-btn" onClick={handleSaveImage}>
-     บันทึก
-  </button>
-
-  <button className="restart-btn" onClick={handleRestart}>
-    ทำแบบทดสอบใหม่
-  </button>
-</div>
-
-
+          <button className="restart-btn" onClick={handleRestart}>
+            ทำแบบทดสอบใหม่
+          </button>
+        </div>
         <div className="result-footer">
           <p>
             ผลลัพธ์นี้ไม่ใช่คำตัดสิน แต่เป็นเพียง
             “กระจกสะท้อนตัวคุณในช่วงเวลานี้”
           </p>
-        </div>
+        </div>{" "}
+        <div className="watermark">@whoyouare</div>
       </div>
     </div>
   );
