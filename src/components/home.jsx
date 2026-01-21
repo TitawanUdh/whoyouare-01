@@ -15,11 +15,12 @@ function Home() {
 
   {/* content */}
   <div className="container d-flex flex-column justify-content-center align-items-center min-vh-100">
-    <h1 className="title">รู้จักตัวเอง</h1>
+    <h1 className="title">รู้จักตัวเองไหม ?</h1>
+
     <p className="subtitle ">
       เคยสงสัยไหมว่า
       <br />
-      ทำไมเราถึงคิดและรู้สึกแบบนี้?
+      ทำไมเราถึงคิดและรู้สึกแบบนี้ ?
     </p>
 
     <Link to="/question/1" className="start-button">

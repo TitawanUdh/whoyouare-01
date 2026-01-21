@@ -15,7 +15,10 @@ function App() {
           path="/question/:id"
           element={<QuestionPage answers={answers} setAnswers={setAnswers} />}
         />
-        <Route path="/result" element={<Result answers={answers} />} />
+        <Route
+          path="/result"
+          element={<Result answers={answers} setAnswers={setAnswers} />}
+        />
       </Routes>
     </BrowserRouter>
   );

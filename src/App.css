@@ -1,14 +1,19 @@
-
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  font-family: "Noto Sans Thai", sans-serif !important;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+* {
+  font-family: "Noto Sans Thai", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
 }
 
 .App-header {
@@ -33,53 +38,55 @@
   overflow: hidden;
 }
 
-
 /* ดาว */
-.stars, .stars2, .stars3 {
+.stars,
+.stars2,
+.stars3 {
   position: absolute;
   inset: 0;
   background: transparent;
   pointer-events: none;
   z-index: 0;
-    filter: drop-shadow(0 0 6px rgba(180,180,255,0.6));
-
+  filter: drop-shadow(0 0 6px rgba(180, 180, 255, 0.6));
 }
 .stars {
   width: 2px;
   height: 2px;
   box-shadow:
-    10vw 20vh rgba(255,255,255,0.9),
-    30vw 80vh rgba(255,255,255,0.8),
-    50vw 40vh rgba(255,255,255,0.7),
-    70vw 10vh rgba(255,255,255,0.9),
-    90vw 60vh rgba(255,255,255,0.6);
-  animation: floatStars 60s linear infinite,
-             twinkle 6s ease-in-out infinite;
+    10vw 20vh rgba(255, 255, 255, 0.9),
+    30vw 80vh rgba(255, 255, 255, 0.8),
+    50vw 40vh rgba(255, 255, 255, 0.7),
+    70vw 10vh rgba(255, 255, 255, 0.9),
+    90vw 60vh rgba(255, 255, 255, 0.6);
+  animation:
+    floatStars 20s linear infinite,
+    twinkle 6s ease-in-out infinite;
 }
 
 .stars2 {
-  width: 1.5px;
+  width: 3.5px;
   height: 1.5px;
   box-shadow:
-    20vw 30vh rgba(200,200,255,0.6),
-    40vw 70vh rgba(200,200,255,0.7),
-    60vw 50vh rgba(200,200,255,0.5),
-    80vw 20vh rgba(200,200,255,0.6);
-  animation: floatStars 90s linear infinite,
-             twinkle 8s ease-in-out infinite;
+    20vw 30vh rgba(200, 200, 255, 0.6),
+    40vw 70vh rgba(200, 200, 255, 0.7),
+    60vw 50vh rgba(200, 200, 255, 0.5),
+    80vw 20vh rgba(200, 200, 255, 0.6);
+  animation:
+    floatStars 90s linear infinite,
+    twinkle 8s ease-in-out infinite;
 }
 
 .stars3 {
   width: 1px;
   height: 1px;
   box-shadow:
-    15vw 60vh rgba(150,150,255,0.4),
-    55vw 25vh rgba(150,150,255,0.5),
-    75vw 75vh rgba(150,150,255,0.4);
-  animation: floatStarsReverse 120s linear infinite,
-             twinkle 10s ease-in-out infinite;
+    15vw 60vh rgba(150, 150, 255, 0.4),
+    55vw 25vh rgba(150, 150, 255, 0.5),
+    75vw 75vh rgba(150, 150, 255, 0.4);
+  animation:
+    floatStarsReverse 120s linear infinite,
+    twinkle 10s ease-in-out infinite;
 }
-
 
 @keyframes floatStars {
   from {
@@ -99,16 +106,13 @@
   }
 }
 
-
-
-
 /* หมอกลึกลับเบา ๆ */
 .overlay {
   position: absolute;
   inset: 0;
   background: radial-gradient(
     circle,
-    rgba(255,255,255,0.04),
+    rgba(255, 255, 255, 0.04),
     transparent 60%
   );
   animation: pulse 6s ease-in-out infinite;
@@ -116,7 +120,7 @@
 
 .container {
   position: relative;
-  z-index: 10;          /* 👈 สูงกว่า fog แน่นอน */
+  z-index: 10; /* 👈 สูงกว่า fog แน่นอน */
   text-align: center;
   color: #fff;
   padding: 2rem;
@@ -133,7 +137,6 @@
   font-weight: 200;
   line-height: 2;
   opacity: 0.75;
-
 }
 
 .start-button {
@@ -155,16 +158,12 @@
   box-shadow: 0 8px 30px rgba(106, 17, 203, 0.6);
 }
 
-
 /* จัดการ <a> ด้านใน */
 .start-button a {
-  color: #fff;              /* ตัวหนังสือขาว */
-  text-decoration: none;    /* เอาเส้นใต้หาย */
+  color: #fff; /* ตัวหนังสือขาว */
+  text-decoration: none; /* เอาเส้นใต้หาย */
   display: block;
 }
-
-
-
 
 /* Animation */
 @keyframes pulse {
@@ -186,7 +185,6 @@
     transform: rotate(360deg);
   }
 }
-
 
 .question-page {
   min-height: 100vh;
@@ -221,7 +219,7 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
-  padding: 1rem ;
+  padding: 1rem;
   color: #fff;
   font-size: 1rem;
   font-weight: 300;
@@ -251,4 +249,34 @@
     transform: translateY(0);
   }
 }
+
+.result-image {
+  text-align: center;
+    width: 50%;
+  height: auto;
+}
+
+.result-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.restart-btn {
+  background: transparent;
+  border: 1px solid currentColor;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.25s ease;
+}
+
+.restart-btn:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+
 
