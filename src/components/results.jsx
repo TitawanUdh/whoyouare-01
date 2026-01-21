@@ -1,158 +1,128 @@
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import { analyzeResult, resultNarrative } from "../utils/analyzeResult";
 import "./Result.css";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
 
 const Result = ({ answers, setAnswers }) => {
-  // 🔹 1. ดึงข้อมูลจาก localStorage (ครั้งเดียว)
   const navigate = useNavigate();
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleRestart = () => {
-    localStorage.removeItem("myself-result"); // 🧹 ล้างผลลัพธ์
-    setAnswers([]); // 🔄 reset answers
-    navigate("/"); // 🏠 กลับหน้าแรก
-  };
-
+  // 1. Hooks (ต้องอยู่บนสุด)
   const savedResult = useMemo(() => {
     try {
       const raw = localStorage.getItem("myself-result");
       return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
+    } catch { return null; }
   }, []);
 
-  // 🔹 2. สร้าง score จาก answers (ถ้ามี)
-  const score =
-    answers && answers.length > 0
-      ? answers.reduce((acc, answer) => {
-          acc[answer] = (acc[answer] || 0) + 1;
-          return acc;
-        }, {})
-      : savedResult?.score || null;
+  const score = answers?.length > 0
+    ? answers.reduce((acc, answer) => {
+        acc[answer] = (acc[answer] || 0) + 1;
+        return acc;
+      }, {})
+    : savedResult?.score || null;
 
-  // 🔹 3. หา group
   const group = score ? analyzeResult(score)[0] : savedResult?.group;
-
-  // 🔹 4. หา data
   const data = group ? resultNarrative[group] : savedResult?.result;
 
-  // 🔹 5. บันทึกลง localStorage (เฉพาะกรณีมี answers ใหม่)
   useEffect(() => {
-    if (!answers || answers.length === 0 || !group || !data) return;
-
-    const resultToSave = {
-      group,
-      score,
-      result: data,
-      timestamp: new Date().toISOString(),
-    };
-
+    if (!answers?.length || !group || !data) return;
+    const resultToSave = { group, score, result: data, timestamp: new Date().toISOString() };
     localStorage.setItem("myself-result", JSON.stringify(resultToSave));
   }, [answers, group, data, score]);
 
-  // 🔹 6. Guard สุดท้าย
-  if (!score || !group || !data) {
-    return <p>ไม่สามารถวิเคราะห์ได้</p>;
-  }
-
-const handleSaveImage = async () => {
+  // 2. Logic การ Save รูป (ซ่อนปุ่มอัตโนมัติ)
+  const handleSaveImage = async () => {
   const element = document.getElementById("result-export");
-  if (!element) {
-    alert("ไม่พบ element");
-    return;
-  }
+  if (!element) return;
 
-  // เข้าโหมด export
+  setIsGenerating(true);
+  
+  // 🔹 1. ใส่ Class เพื่อสั่งซ่อนปุ่มผ่าน CSS
   element.classList.add("exporting");
+
+  // 🔹 2. รอซักพัก (Delay) ให้ iOS จัดการ UI ให้เสร็จก่อนถ่าย
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
   try {
     const canvas = await html2canvas(element, {
-      scale: 3,
-      backgroundColor: "#f3faef",
+      scale: 2, // ลดลงมาเป็น 2 เพื่อไม่ให้ไฟล์หนักเกินไปสำหรับ iPhone
       useCORS: true,
-      windowWidth: 390, // fix mobile width
+      backgroundColor: "#f3faef", // ระบุสีพื้นหลังให้ชัดเจนกันสีจาง
+      logging: false,
     });
 
     const dataUrl = canvas.toDataURL("image/png");
+    
+    // สร้าง Link ดาวน์โหลด
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = `my-result.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-    // ✅ iOS-safe: เปิดแท็บใหม่
-    const win = window.open();
-    if (win) {
-      win.document.write(`
-        <html>
-          <head>
-            <title>Save Image</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-          </head>
-          <body style="margin:0; text-align:center; background:#f3faef;">
-            <img src="${dataUrl}" style="width:100%; height:auto;" />
-            <p style="font-family:sans-serif; padding:12px;">
-              กดค้างที่รูปเพื่อบันทึก
-            </p>
-          </body>
-        </html>
-      `);
-    }
   } catch (err) {
     console.error(err);
-    alert("ไม่สามารถบันทึกรูปได้");
+    alert("ไม่สามารถบันทึกได้");
   } finally {
+    // 🔹 3. เอา Class ออกเพื่อให้ปุ่มกลับมาแสดงผล
     element.classList.remove("exporting");
+    setIsGenerating(false);
   }
 };
 
+  const handleRestart = () => {
+    localStorage.removeItem("myself-result");
+    setAnswers([]);
+    navigate("/");
+  };
 
-  // 🔹 7. Render ปกติ
+  if (!score || !group || !data) return <p>ไม่สามารถวิเคราะห์ได้</p>;
+
   return (
-<div
-  className={`result-page theme-${group}`}
-  id="result-export"
->
-      <div className="result-card">
-        <div className="result-header">
+<div className={`result-page theme-${group}`} id="result-export">
+    <div className="result-card">
+              <div className="result-header text-center">
           <p className="result-label">ผลลัพธ์ของคุณ</p>
           <h2 className="result-title">{data.title}</h2>
         </div>
+
         {data.image && (
-          <div className="d-flex justify-content-center">
-            <Image
-              className="result-image"
-              src={data.image}
-              alt={data.title}
-              fluid
-            />
+          <div className="d-flex justify-content-center my-3">
+            <Image className="result-image" src={data.image} alt={data.title} fluid />
           </div>
         )}
+
         <div className="result-story">
           <p>{data.story}</p>
         </div>
+
         <div className="result-section">
           <h4>🌱 จุดแข็ง</h4>
           <ul>
-            {data.strength?.map((s, i) => (
-              <li key={i}>{s}</li>
-            ))}
+            {data.strength?.map((s, i) => <li key={i}>{s}</li>)}
           </ul>
         </div>
-        <div className="result-actions no-export">
-          <button className="save-btn" onClick={handleSaveImage}>
-            บันทึก
-          </button>
 
-          <button className="restart-btn" onClick={handleRestart}>
-            ทำแบบทดสอบใหม่
-          </button>
-        </div>
-        <div className="result-footer">
-          <p>
-            ผลลัพธ์นี้ไม่ใช่คำตัดสิน แต่เป็นเพียง
-            “กระจกสะท้อนตัวคุณในช่วงเวลานี้”
+        {/* 🔹 ส่วนของปุ่มที่จะถูกซ่อนเวลา Save */}
+       <div className="result-actions no-export">
+        <Button className="save-btn" onClick={handleSaveImage} disabled={isGenerating}>
+          {isGenerating ? "กำลังบันทึก..." : "บันทึกรูปภาพ"}
+        </Button>
+        <Button className="restart-btn" onClick={handleRestart}>
+          เริ่มใหม่
+        </Button>
+      </div>
+
+        <div className="result-footer mt-4 text-center">
+          <p style={{ fontSize: '0.8rem', color: '#666' }}>
+            ผลลัพธ์นี้ไม่ใช่คำตัดสิน แต่เป็นเพียงกระจกสะท้อนตัวคุณ
           </p>
-        </div>{" "}
-        <div className="watermark">@whoyouare</div>
+          <div className="watermark" style={{ fontWeight: 'bold', opacity: 0.5 }}>@whoyouare</div>
+        </div>
       </div>
     </div>
   );
