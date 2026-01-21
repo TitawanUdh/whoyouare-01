@@ -297,13 +297,15 @@
   opacity: 0.85;
 }
 
-.export-card {
-  width: 390px;      /* iPhone width */
-  min-height: 780px; /* 9:16 */
-  background: #f3faef;
-  padding: 32px;
-  border-radius: 24px;
+/* container สำหรับ export */
+#result-export {
+  max-width: 390px;
   margin: 0 auto;
+}
+
+/* ซ่อน element ตอน export */
+.exporting .no-export {
+  display: none !important;
 }
 
 /* โหมด export */
@@ -314,8 +316,10 @@
 .exporting * {
   opacity: 1 !important;
   filter: none !important;
+  box-shadow: none !important;
   color: #2f4f3f !important;
 }
+
 
 
 .watermark {

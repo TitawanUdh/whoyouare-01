@@ -58,36 +58,59 @@ const Result = ({ answers, setAnswers }) => {
     return <p>ไม่สามารถวิเคราะห์ได้</p>;
   }
 
-  const handleSaveImage = async () => {
-  const element = document.getElementById("export-card");
-  if (!element) return;
+const handleSaveImage = async () => {
+  const element = document.getElementById("result-export");
+  if (!element) {
+    alert("ไม่พบ element");
+    return;
+  }
 
+  // เข้าโหมด export
   element.classList.add("exporting");
 
-  const canvas = await html2canvas(element, {
-    scale: 3, // เพิ่มความคม
-    backgroundColor: "#f3faef",
-    useCORS: true,
-    width: 390,
-    height: element.offsetHeight,
-    windowWidth: 390,
-  });
+  try {
+    const canvas = await html2canvas(element, {
+      scale: 3,
+      backgroundColor: "#f3faef",
+      useCORS: true,
+      windowWidth: 390, // fix mobile width
+    });
 
-  element.classList.remove("exporting");
+    const dataUrl = canvas.toDataURL("image/png");
 
-  const image = canvas.toDataURL("image/png");
-
-  const link = document.createElement("a");
-  link.href = image;
-  link.download = "myself-result.png";
-  link.click();
+    // ✅ iOS-safe: เปิดแท็บใหม่
+    const win = window.open();
+    if (win) {
+      win.document.write(`
+        <html>
+          <head>
+            <title>Save Image</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+          </head>
+          <body style="margin:0; text-align:center; background:#f3faef;">
+            <img src="${dataUrl}" style="width:100%; height:auto;" />
+            <p style="font-family:sans-serif; padding:12px;">
+              กดค้างที่รูปเพื่อบันทึก
+            </p>
+          </body>
+        </html>
+      `);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("ไม่สามารถบันทึกรูปได้");
+  } finally {
+    element.classList.remove("exporting");
+  }
 };
-
 
 
   // 🔹 7. Render ปกติ
   return (
-    <div className={`result-page theme-${group}`} id="result-image">
+<div
+  className={`result-page theme-${group}`}
+  id="result-export"
+>
       <div className="result-card">
         <div className="result-header">
           <p className="result-label">ผลลัพธ์ของคุณ</p>
@@ -114,7 +137,7 @@ const Result = ({ answers, setAnswers }) => {
             ))}
           </ul>
         </div>
-        <div className="result-actions">
+        <div className="result-actions no-export">
           <button className="save-btn" onClick={handleSaveImage}>
             บันทึก
           </button>
