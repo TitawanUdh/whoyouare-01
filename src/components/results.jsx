@@ -3,6 +3,7 @@ import { analyzeResult, resultNarrative } from "../utils/analyzeResult";
 import "./Result.css";
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import html2canvas from "html2canvas";
 
 const Result = ({ answers, setAnswers }) => {
   // 🔹 1. ดึงข้อมูลจาก localStorage (ครั้งเดียว)
@@ -57,9 +58,29 @@ const Result = ({ answers, setAnswers }) => {
     return <p>ไม่สามารถวิเคราะห์ได้</p>;
   }
 
+  const handleSaveImage = async () => {
+  const element = document.getElementById("result-image");
+
+  if (!element) return;
+
+  const canvas = await html2canvas(element, {
+    scale: 2,              // เพิ่มความคม
+    useCORS: true,
+    backgroundColor: "#ffffff",
+  });
+
+  const image = canvas.toDataURL("image/png");
+
+  const link = document.createElement("a");
+  link.href = image;
+  link.download = "myself-result.png";
+  link.click();
+};
+
+
   // 🔹 7. Render ปกติ
   return (
-    <div className={`result-page theme-${group}`}>
+    <div className={`result-page theme-${group}`} id="result-image">
       <div className="result-card">
         <div className="result-header">
           <p className="result-label">ผลลัพธ์ของคุณ</p>
@@ -89,11 +110,17 @@ const Result = ({ answers, setAnswers }) => {
             ))}
           </ul>
         </div>
+
 <div className="result-actions">
+  <button className="save-btn" onClick={handleSaveImage}>
+     บันทึก
+  </button>
+
   <button className="restart-btn" onClick={handleRestart}>
-    🔄 ทำแบบทดสอบใหม่
+    ทำแบบทดสอบใหม่
   </button>
 </div>
+
 
         <div className="result-footer">
           <p>
