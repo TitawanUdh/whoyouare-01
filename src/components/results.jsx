@@ -59,28 +59,31 @@ const Result = ({ answers, setAnswers }) => {
   }
 
   const handleSaveImage = async () => {
-    const element = document.getElementById("result-image");
-    if (!element) return;
+  const element = document.getElementById("export-card");
+  if (!element) return;
 
-    // 🔹 เข้าโหมด export
-    element.classList.add("export-mode");
+  element.classList.add("exporting");
 
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#f3faef", // สำคัญมาก
-    });
+  const canvas = await html2canvas(element, {
+    scale: 3, // เพิ่มความคม
+    backgroundColor: "#f3faef",
+    useCORS: true,
+    width: 390,
+    height: element.offsetHeight,
+    windowWidth: 390,
+  });
 
-    // 🔹 ออกจากโหมด export
-    element.classList.remove("export-mode");
+  element.classList.remove("exporting");
 
-    const image = canvas.toDataURL("image/png");
+  const image = canvas.toDataURL("image/png");
 
-    const link = document.createElement("a");
-    link.href = image;
-    link.download = "myself-result.png";
-    link.click();
-  };
+  const link = document.createElement("a");
+  link.href = image;
+  link.download = "myself-result.png";
+  link.click();
+};
+
+
 
   // 🔹 7. Render ปกติ
   return (

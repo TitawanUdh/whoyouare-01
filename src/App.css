@@ -297,16 +297,26 @@
   opacity: 0.85;
 }
 
-.export-mode {
-  background: #f3faef !important; /* สีเขียวอ่อนแบบเดียวกับธีม */
-}
-
-.export-mode * {
-  opacity: 1 !important;
-  filter: none !important;
+.export-card {
+  width: 390px;      /* iPhone width */
+  min-height: 780px; /* 9:16 */
+  background: #f3faef;
   padding: 32px;
   border-radius: 24px;
+  margin: 0 auto;
 }
+
+/* โหมด export */
+.exporting {
+  background: #f3faef !important;
+}
+
+.exporting * {
+  opacity: 1 !important;
+  filter: none !important;
+  color: #2f4f3f !important;
+}
+
 
 .watermark {
   position: fixed;
