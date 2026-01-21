@@ -263,14 +263,15 @@
 }
 
 .restart-btn {
-  background-color: white !important;
+  background-color: #ffffff !important;
   color: #1a1a1a !important;
   border: 1px solid #1a1a1a !important;
-  border-radius: 50px; /* ทรงมน Pill */
   padding: 12px 25px;
+  border-radius: 100px; /* ทรงมน Pill */
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-    width: 40%;
+        width: 40%;
 
 }
 
@@ -280,41 +281,41 @@
 }
 
 .save-btn {
-  background-color: #1a1a1a !important; /* สีดำ */
-  color: white !important;
-  border: none;
-  border-radius: 50px; /* ทรงมน Pill */
-  padding: 12px 35px;
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 12px 40px;
+  border-radius: 100px; /* ทรงมน Pill */
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: transform 0.2s;
-  width: 40%;
-}
+      width: 40%;
 
+}
 .save-btn:hover {
   opacity: 0.85;
 }
 
-/* แก้ไขให้รูปที่ Export ออกมามีสีชัดเจน (Opacity 1) */
+/* 1. บังคับให้หน้าจอชัดเจน 100% ไม่จาง */
 #result-export {
-  background-color: #f3faef !important; /* หรือสีตาม theme */
   opacity: 1 !important;
+  visibility: visible !important;
+  background-color: #f3faef !important; /* บังคับพื้นหลังเข้มขึ้นตามธีม */
 }
 
 /* คลาสพิเศษที่จะทำงานเฉพาะตอนกำลัง Save รูป */
 .exporting .no-export {
   display: none !important;
-  visibility: hidden !important;
   opacity: 0 !important;
 }
 
-/* ปรับแต่งปุ่มให้ดูชัดเจนในหน้าเว็บปกติ */
+/* 2. ดีไซน์ปุ่ม Pill Shape สีดำ-ขาว */
 .result-actions {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 30px;
-  padding-bottom: 20px;
+  align-items: center;
+  gap: 12px;
+  margin-top: 25px;
 }
 
 
@@ -369,7 +370,7 @@
 .watermark {
   position: fixed;
   bottom: 16px;
-  right: 16px;
+  right: 30px;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.2);
   pointer-events: none;

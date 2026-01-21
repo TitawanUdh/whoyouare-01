@@ -40,35 +40,35 @@ const Result = ({ answers, setAnswers }) => {
 
   setIsGenerating(true);
   
-  // 🔹 1. ใส่ Class เพื่อสั่งซ่อนปุ่มผ่าน CSS
+  // 1. ใส่ class เพื่อซ่อนปุ่มผ่าน CSS ทันที
   element.classList.add("exporting");
 
-  // 🔹 2. รอซักพัก (Delay) ให้ iOS จัดการ UI ให้เสร็จก่อนถ่าย
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  // 2. รอเล็กน้อยให้ Browser อัปเดต UI (แก้ปุ่มไม่หาย)
+  await new Promise((resolve) => setTimeout(resolve, 200));
 
   try {
     const canvas = await html2canvas(element, {
-      scale: 2, // ลดลงมาเป็น 2 เพื่อไม่ให้ไฟล์หนักเกินไปสำหรับ iPhone
+      scale: 2, 
       useCORS: true,
-      backgroundColor: "#f3faef", // ระบุสีพื้นหลังให้ชัดเจนกันสีจาง
+      backgroundColor: "#f3faef", // แก้ปัญหารูปจาง/พื้นหลังหาย
       logging: false,
     });
 
     const dataUrl = canvas.toDataURL("image/png");
     
-    // สร้าง Link ดาวน์โหลด
+    // สร้างตัวดาวน์โหลดชั่วคราว
     const link = document.createElement("a");
     link.href = dataUrl;
-    link.download = `my-result.png`;
+    link.download = `result-${group}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
   } catch (err) {
     console.error(err);
-    alert("ไม่สามารถบันทึกได้");
+    alert("เกิดข้อผิดพลาดในการบันทึก");
   } finally {
-    // 🔹 3. เอา Class ออกเพื่อให้ปุ่มกลับมาแสดงผล
+    // 3. เอา class ออกเพื่อให้ปุ่มกลับมาแสดงบนหน้าเว็บ
     element.classList.remove("exporting");
     setIsGenerating(false);
   }
