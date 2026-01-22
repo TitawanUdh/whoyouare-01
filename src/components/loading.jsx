@@ -2,26 +2,12 @@ import { useEffect, useState } from "react";
 import { Button, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import AdsBook01 from "../assets/images/ads-book-1.jpg";
-import AdsBook06 from "../assets/images/ads-book-6.jpg";
 
 export default function LoadingResult() {
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(8);
   const [phase, setPhase] = useState("loading");
-  const adsImages = [
-    AdsBook01,
-    AdsBook06,
-  ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % adsImages.length);
-    }, 2500); // เปลี่ยนทุก 2.5 วิ
-
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -67,7 +53,7 @@ export default function LoadingResult() {
           <p className="ads-text">  เรามีชีวิตอยู่เพื่ออะไร คำถามนี้อาจไม่มีคำตอบตายตัว แต่แน่นอนว่า "ถึงเราจะเลือกเกิดไม่ได้ แต่เราเลือกที่จะมีชีวิตที่ดีได้"</p>
 
           <Image
-            src={adsImages[currentIndex]}
+            src={AdsBook01}
             alt="ads"
             className="ads-image"
           />
