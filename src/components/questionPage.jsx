@@ -16,12 +16,20 @@ function QuestionPage({ answers, setAnswers }) {
     newAnswers[questionIndex] = option.trait;
     setAnswers(newAnswers);
 
+    // if (questionIndex + 1 < questions.length) {
+    //   navigate(`/question/${questionIndex + 2}`);
+    // } else {
+    //   navigate("/result");
+    // }
     if (questionIndex + 1 < questions.length) {
-      navigate(`/question/${questionIndex + 2}`);
-    } else {
-      navigate("/result");
-    }
+  navigate(`/question/${questionIndex + 2}`);
+} else {
+  localStorage.setItem("quizScore", JSON.stringify(newAnswers));
+  navigate("/loading");
+}
+
   };
+
 
   return (
     <div className="App ">
