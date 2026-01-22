@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import AdsBook01 from "../assets/images/ads-book-1.jpg";
-import AdsBook02 from "../assets/images/ads-book-2.jpg";
-import AdsBook03 from "../assets/images/ads-book-3.jpg";
 import AdsBook06 from "../assets/images/ads-book-6.jpg";
-import AdsBook07 from "../assets/images/ads-book-7.jpg";
-import AdsBook08 from "../assets/images/ads-book-8.jpg";
 
 export default function LoadingResult() {
   const navigate = useNavigate();
@@ -14,11 +10,7 @@ export default function LoadingResult() {
   const [phase, setPhase] = useState("loading");
   const adsImages = [
     AdsBook01,
-    AdsBook02,
-    AdsBook03,
     AdsBook06,
-    AdsBook07,
-    AdsBook08,
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
