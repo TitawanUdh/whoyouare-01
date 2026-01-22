@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import ads01 from "../assets/images/ads-1.jpg";
+import Ads01 from "../assets/images/ads-1.jpg";
 
 export default function LoadingResult() {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ useEffect(() => {
         <div className="ad-box">
           <h2 className="mt-3">เล่มเดียวจบ</h2>
           <p className="ads-text">ไม่ต้องเสียเงินซื้อคอร์สหลักพัน</p>
-          <Image src={ads01} alt="ads" />
+          <Image src={Ads01} alt="ads" />
           <div className="d-flex justify-content-center my-3">
             <Button className="ads-button">ซื้อเลย</Button>
           </div>
