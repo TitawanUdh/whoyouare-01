@@ -293,7 +293,7 @@
 .secondary-analysis {
   background: rgba(255, 255, 255, 0.5);
   border-left: 4px solid var(--theme-color);
-  padding: 15px;
+  padding: 0px 15px 0px 15px;
   margin: 20px 0;
   border-radius: 0 12px 12px 0;
   font-size: 0.95rem;
@@ -313,5 +313,21 @@
 /* ปรับสีตัวอักษรให้เข้มชัดเจนแก้ปัญหารูปจาง */
 .result-story p, .secondary-analysis p {
   color: #2c3e50 !important;
+  opacity: 1 !important;
+}
+
+/* เมื่อกำลังเซฟรูป ให้บังคับการ์ดเป็นสีขาวทึบและปิดตัวช่วยฟิลเตอร์ที่ทำให้ภาพจาง */
+.exporting .result-card {
+  background: #ffffff !important; /* เปลี่ยนจาก rgba เป็นสีขาวทึบ */
+  backdrop-filter: none !important; /* ปิดตัวเบลอที่เป็นปัญหา */
+  box-shadow: none !important; /* ปิดเงาเพื่อความคมชัด */
+}
+
+/* บังคับสีตัวอักษรให้ดำเข้มขึ้นในโหมดเซฟรูป */
+.exporting .result-title,
+.exporting .result-story p,
+.exporting .secondary-analysis p,
+.exporting .result-section li {
+  color: #1a1a1a !important;
   opacity: 1 !important;
 }

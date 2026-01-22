@@ -47,32 +47,36 @@ const handleSaveImage = async () => {
 
   setIsGenerating(true);
   
+  // เก็บสีพื้นหลังธีมไว้
   const computedStyle = window.getComputedStyle(element);
   const currentBgColor = computedStyle.backgroundColor;
 
   element.classList.add("exporting");
 
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  // รอให้ UI อัปเดตและหยุด Animation (สำคัญมาก)
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
   try {
     const canvas = await html2canvas(element, {
-      scale: 2,
+      scale: 3, // เพิ่มเป็น 3 เพื่อความชัดบนมือถือ
       useCORS: true,
       backgroundColor: currentBgColor, 
       logging: false,
+      // แก้ปัญหาภาพจางในระดับลึก
       onclone: (clonedDoc) => {
-        const clonedElement = clonedDoc.getElementById("result-export");
-        if (clonedElement) {
-          clonedElement.style.opacity = "1";
-          clonedElement.style.background = currentBgColor;
+        const clonedCard = clonedDoc.querySelector(".result-card");
+        if (clonedCard) {
+          clonedCard.style.background = "#ffffff"; // บังคับการ์ดขาวทึบ
+          clonedCard.style.backdropFilter = "none"; 
+          clonedCard.style.webkitBackdropFilter = "none";
+          clonedCard.style.animation = "none"; // ปิด animation ไม่ให้ภาพฟุ้ง
         }
       }
     });
 
-    // ✅ 1. ต้องสร้าง dataUrl ตรงนี้
     const dataUrl = canvas.toDataURL("image/png");
-
-    // ✅ 2. และใช้งาน link ดาวน์โหลดภายในบล็อก try นี้เลย
+    
+    // สำหรับมือถือ แนะนำให้ใช้ตัวช่วยดาวน์โหลดแบบนี้
     const link = document.createElement("a");
     link.href = dataUrl;
     link.download = `result-${group}.png`;
