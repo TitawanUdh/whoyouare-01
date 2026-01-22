@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Ads01 from "../assets/images/ads-1.jpg";
 import AdsBook01 from "../assets/images/ads-book-1.jpg";
 import AdsBook02 from "../assets/images/ads-book-2.jpg";
 import AdsBook03 from "../assets/images/ads-book-3.jpg";
