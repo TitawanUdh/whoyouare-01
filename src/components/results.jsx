@@ -18,9 +18,7 @@ const Result = ({ answers, setAnswers }) => {
     }
   }, []);
 
-  // 🔹 ส่วนวิเคราะห์ข้อมูลชั้นสูง: หา Primary และ Secondary
   const analysis = useMemo(() => {
-    // ใช้คำตอบปัจจุบัน หรือใช้ score จาก storage ถ้า answers ว่าง
     const currentAnswers =
       answers?.length > 0 ? answers : savedResult?.rawAnswers || [];
     return analyzeResult(currentAnswers);
@@ -35,7 +33,7 @@ const Result = ({ answers, setAnswers }) => {
     const resultToSave = {
       group,
       result: data,
-      rawAnswers: answers, // เก็บคำตอบดิบไว้เพื่อวิเคราะห์ซ้ำ
+      rawAnswers: answers, 
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem("myself-result", JSON.stringify(resultToSave));
@@ -53,16 +51,14 @@ const handleSaveImage = async () => {
 
   element.classList.add("exporting");
 
-  // รอให้ UI อัปเดตและหยุด Animation (สำคัญมาก)
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   try {
     const canvas = await html2canvas(element, {
-      scale: 3, // เพิ่มเป็น 3 เพื่อความชัดบนมือถือ
+      scale: 3, 
       useCORS: true,
       backgroundColor: currentBgColor, 
       logging: false,
-      // แก้ปัญหาภาพจางในระดับลึก
       onclone: (clonedDoc) => {
         const clonedCard = clonedDoc.querySelector(".result-card");
         if (clonedCard) {
@@ -76,7 +72,6 @@ const handleSaveImage = async () => {
 
     const dataUrl = canvas.toDataURL("image/png");
     
-    // สำหรับมือถือ แนะนำให้ใช้ตัวช่วยดาวน์โหลดแบบนี้
     const link = document.createElement("a");
     link.href = dataUrl;
     link.download = `result-${group}.png`;
@@ -124,7 +119,6 @@ const handleSaveImage = async () => {
           <p>{data.story}</p>
         </div>
 
-        {/* 🔹 มิติที่ซ่อนอยู่ (วิเคราะห์ชั้นที่ 2) */}
         <div className="secondary-analysis text-start">
           <p>
             <strong>มิติที่ซ่อนอยู่:</strong> แม้คุณจะเน้นเรื่อง {data.title}
@@ -143,7 +137,6 @@ const handleSaveImage = async () => {
           </ul>
         </div>
 
-        {/* 🔹 ดีไซน์ปุ่มใหม่ ทรงมน สีดำ-ขาว */}
         <div className="result-actions no-export">
           <button
             className="save-btn"

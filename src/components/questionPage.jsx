@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import questions from "./question";
 
@@ -15,12 +14,6 @@ function QuestionPage({ answers, setAnswers }) {
     const newAnswers = [...answers];
     newAnswers[questionIndex] = option.trait;
     setAnswers(newAnswers);
-
-    // if (questionIndex + 1 < questions.length) {
-    //   navigate(`/question/${questionIndex + 2}`);
-    // } else {
-    //   navigate("/result");
-    // }
     if (questionIndex + 1 < questions.length) {
   navigate(`/question/${questionIndex + 2}`);
 } else {
