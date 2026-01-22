@@ -6,7 +6,6 @@ import Ads01 from "../assets/images/ads-1.jpg";
 export default function LoadingResult() {
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(8);
-  const [showButton, setShowButton] = useState(false);
   const [phase, setPhase] = useState("loading");
 useEffect(() => {
   const timer1 = setTimeout(() => {
@@ -24,11 +23,6 @@ useEffect(() => {
 }, []);
 
   useEffect(() => {
-    if (countdown <= 0) {
-      setShowButton(true);
-      return;
-    }
-
     const timer = setTimeout(() => {
       setCountdown((prev) => prev - 1);
     }, 1000);
