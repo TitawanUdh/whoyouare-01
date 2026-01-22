@@ -59,7 +59,7 @@ export default function LoadingResult() {
           />
 
           <div className="d-flex justify-content-center my-3">
-            <Button className="ads-button">ซื้อเลย</Button>
+            <Button className="ads-button">ดูเพิ่มเติม</Button>
           </div>
         </div>
       </a>
