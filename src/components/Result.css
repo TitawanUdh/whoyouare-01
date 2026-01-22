@@ -62,9 +62,9 @@
 }
 
 /* section */
-.result-section h4 {
-  margin-top: 24px;
-}
+/* .result-section h4 {
+  margin-top: 4px;
+} */
 
 .result-section ul {
   padding-left: 18px;
@@ -76,6 +76,17 @@
   font-size: 13px;
   opacity: 0.6;
   text-align: center;
+}
+
+.watermark {
+  position: fixed;
+  align-items: center;
+  bottom: 16px;
+  right: 30px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  user-select: none;
 }
 
 .theme-default {

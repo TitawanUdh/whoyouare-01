@@ -25,14 +25,15 @@ function QuestionPage({ answers, setAnswers }) {
 
   return (
     <div className="App ">
-      <div className="question-page">
+      <div className="question-page" key={question.id || question.question}>
+        {/* 🔹 ใส่ key ไว้ที่นี่ เมื่อค่านี้เปลี่ยน React จะ Reset UI ทั้งหมดในนี้ */}
         <div className="container d-flex flex-column justify-content-center align-items-center min-vh-100">
           <div className="question-title">
             <h2>{question.question}</h2>
           </div>
           {question.options.map((opt) => (
             <div
-              key={opt.key}
+              key={`${question.id}-${opt.key}`} // 🔹 ใช้ key ที่รวม id ข้อเข้าไปด้วย
               className="option"
               onClick={() => handleSelect(opt)}
             >

@@ -1,15 +1,15 @@
 import { Button, Image } from "react-bootstrap";
-import { analyzeResult, resultNarrative } from "../utils/analyzeResult";
+// นำเข้า secondaryNarratives เพิ่มเติม (ถ้าแยกไฟล์ไว้อย่าลืม import)
+import { analyzeResult, resultNarrative } from "../utils/analyzeResult"; 
 import "./Result.css";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas"; // ปลดคอมเมนต์ออก
 
 const Result = ({ answers, setAnswers }) => {
   const navigate = useNavigate();
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // 1. Hooks (ต้องอยู่บนสุด)
   const savedResult = useMemo(() => {
     try {
       const raw = localStorage.getItem("myself-result");
@@ -17,62 +17,64 @@ const Result = ({ answers, setAnswers }) => {
     } catch { return null; }
   }, []);
 
-  const score = answers?.length > 0
-    ? answers.reduce((acc, answer) => {
-        acc[answer] = (acc[answer] || 0) + 1;
-        return acc;
-      }, {})
-    : savedResult?.score || null;
+  // 🔹 ส่วนวิเคราะห์ข้อมูลชั้นสูง: หา Primary และ Secondary
+  const analysis = useMemo(() => {
+    // ใช้คำตอบปัจจุบัน หรือใช้ score จาก storage ถ้า answers ว่าง
+    const currentAnswers = answers?.length > 0 ? answers : savedResult?.rawAnswers || [];
+    return analyzeResult(currentAnswers);
+  }, [answers, savedResult]);
 
-  const group = score ? analyzeResult(score)[0] : savedResult?.group;
-  const data = group ? resultNarrative[group] : savedResult?.result;
+  const group = analysis.primary;
+  const secondaryGroup = analysis.secondary;
+  const data = resultNarrative[group];
 
   useEffect(() => {
     if (!answers?.length || !group || !data) return;
-    const resultToSave = { group, score, result: data, timestamp: new Date().toISOString() };
+    const resultToSave = { 
+      group, 
+      result: data, 
+      rawAnswers: answers, // เก็บคำตอบดิบไว้เพื่อวิเคราะห์ซ้ำ
+      timestamp: new Date().toISOString() 
+    };
     localStorage.setItem("myself-result", JSON.stringify(resultToSave));
-  }, [answers, group, data, score]);
+  }, [answers, group, data]);
 
-  // 2. Logic การ Save รูป (ซ่อนปุ่มอัตโนมัติ)
+  // 🔹 Logic การ Save รูปที่ปรับปรุงแล้ว (แก้รูปจาง + ซ่อนปุ่ม)
   const handleSaveImage = async () => {
-  const element = document.getElementById("result-export");
-  if (!element) return;
+    const element = document.getElementById("result-export");
+    if (!element) return;
 
-  setIsGenerating(true);
-  
-  // 1. ใส่ class เพื่อซ่อนปุ่มผ่าน CSS ทันที
-  element.classList.add("exporting");
+    setIsGenerating(true);
+    element.classList.add("exporting");
 
-  // 2. รอเล็กน้อยให้ Browser อัปเดต UI (แก้ปุ่มไม่หาย)
-  await new Promise((resolve) => setTimeout(resolve, 200));
+    // รอให้ UI อัปเดตการซ่อนปุ่ม
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
-  try {
-    const canvas = await html2canvas(element, {
-      scale: 2, 
-      useCORS: true,
-      backgroundColor: "#f3faef", // แก้ปัญหารูปจาง/พื้นหลังหาย
-      logging: false,
-    });
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#f3faef",
+        logging: false,
+        onclone: (clonedDoc) => {
+          // บังคับให้ Element ที่ clone มาชัดเจน 100%
+          clonedDoc.getElementById("result-export").style.opacity = "1";
+        }
+      });
 
-    const dataUrl = canvas.toDataURL("image/png");
-    
-    // สร้างตัวดาวน์โหลดชั่วคราว
-    const link = document.createElement("a");
-    link.href = dataUrl;
-    link.download = `result-${group}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-  } catch (err) {
-    console.error(err);
-    alert("เกิดข้อผิดพลาดในการบันทึก");
-  } finally {
-    // 3. เอา class ออกเพื่อให้ปุ่มกลับมาแสดงบนหน้าเว็บ
-    element.classList.remove("exporting");
-    setIsGenerating(false);
-  }
-};
+      const dataUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `result-${group}.png`;
+      link.click();
+    } catch (err) {
+      console.error(err);
+      alert("ไม่สามารถบันทึกรูปได้");
+    } finally {
+      element.classList.remove("exporting");
+      setIsGenerating(false);
+    }
+  };
 
   const handleRestart = () => {
     localStorage.removeItem("myself-result");
@@ -80,13 +82,13 @@ const Result = ({ answers, setAnswers }) => {
     navigate("/");
   };
 
-  if (!score || !group || !data) return <p>ไม่สามารถวิเคราะห์ได้</p>;
+  if (!group || !data) return <p>ไม่สามารถวิเคราะห์ได้</p>;
 
   return (
-<div className={`result-page theme-${group}`} id="result-export">
-    <div className="result-card">
-              <div className="result-header text-center">
-          <p className="result-label">ผลลัพธ์ของคุณ</p>
+    <div className={`result-page theme-${group}`} id="result-export">
+      <div className="result-card">
+        <div className="result-header text-center">
+          <p className="result-label">ตัวตนหลักของคุณคือ</p>
           <h2 className="result-title">{data.title}</h2>
         </div>
 
@@ -100,6 +102,15 @@ const Result = ({ answers, setAnswers }) => {
           <p>{data.story}</p>
         </div>
 
+        {/* 🔹 มิติที่ซ่อนอยู่ (วิเคราะห์ชั้นที่ 2) */}
+        <div className="secondary-analysis text-start">
+          <p>
+            <strong>มิติที่ซ่อนอยู่:</strong> แม้คุณจะเน้นเรื่อง {data.title} 
+            แต่ลึกๆ คุณยังมีเฉดของ <strong>{resultNarrative[secondaryGroup]?.title}</strong> ผสมอยู่ 
+            ซึ่งช่วยให้คุณเป็นคนที่มองโลกได้รอบด้านมากขึ้น
+          </p>
+        </div>
+
         <div className="result-section">
           <h4>🌱 จุดแข็ง</h4>
           <ul>
@@ -107,21 +118,21 @@ const Result = ({ answers, setAnswers }) => {
           </ul>
         </div>
 
-        {/* 🔹 ส่วนของปุ่มที่จะถูกซ่อนเวลา Save */}
-       <div className="result-actions no-export">
-        <Button className="save-btn" onClick={handleSaveImage} disabled={isGenerating}>
-          {isGenerating ? "กำลังบันทึก..." : "บันทึกรูปภาพ"}
-        </Button>
-        <Button className="restart-btn" onClick={handleRestart}>
-          เริ่มใหม่
-        </Button>
-      </div>
+        {/* 🔹 ดีไซน์ปุ่มใหม่ ทรงมน สีดำ-ขาว */}
+        <div className="result-actions no-export">
+          <button className="save-btn" onClick={handleSaveImage} disabled={isGenerating}>
+            {isGenerating ? "กำลังบันทึก..." : "บันทึก"}
+          </button>
+          <button className="restart-btn" onClick={handleRestart}>
+            เริ่มใหม่
+          </button>
+        </div>
 
         <div className="result-footer mt-4 text-center">
           <p style={{ fontSize: '0.8rem', color: '#666' }}>
             ผลลัพธ์นี้ไม่ใช่คำตัดสิน แต่เป็นเพียงกระจกสะท้อนตัวคุณ
           </p>
-          <div className="watermark" style={{ fontWeight: 'bold', opacity: 0.5 }}>@whoyouare</div>
+          <div className="watermark">@whoyouare</div>
         </div>
       </div>
     </div>

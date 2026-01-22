@@ -20,7 +20,7 @@ function Home() {
     <p className="subtitle ">
       เคยสงสัยไหมว่า
       <br />
-      ทำไมเราถึงคิดและรู้สึกแบบนี้ ?
+      อะไรคือแรงขับเคลื่อนของชีวิตคุณ ?
     </p>
 
     <Link to="/question/1" className="start-button">

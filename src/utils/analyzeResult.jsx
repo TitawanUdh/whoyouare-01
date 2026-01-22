@@ -20,17 +20,60 @@ export const traitGroups = {
   ],
 };
 
-export const analyzeResult = (score) => {
-  const groupScore = {};
+// export const analyzeResult = (score) => {
+//   const groupScore = {};
 
-  Object.entries(traitGroups).forEach(([group, traits]) => {
-    groupScore[group] = traits.reduce(
-      (sum, trait) => sum + (score[trait] || 0),
-      0,
-    );
+//   Object.entries(traitGroups).forEach(([group, traits]) => {
+//     groupScore[group] = traits.reduce(
+//       (sum, trait) => sum + (score[trait] || 0),
+//       0,
+//     );
+//   });
+
+//   return Object.entries(groupScore).sort((a, b) => b[1] - a[1])[0];
+// };
+
+export const analyzeResult = (answers) => {
+  const groupScore = {
+    energy: 0, freedom: 0, connection: 0, 
+    meaning: 0, thinking: 0, selfWorth: 0
+  };
+
+  // 1. รวมคะแนน
+  answers.forEach(trait => {
+    Object.entries(traitGroups).forEach(([group, traits]) => {
+      if (traits.includes(trait)) {
+        groupScore[group] += 1;
+      }
+    });
   });
 
-  return Object.entries(groupScore).sort((a, b) => b[1] - a[1])[0];
+  // 2. เรียงลำดับกลุ่มที่ได้คะแนนสูงสุด 2 อันดับ
+  const sorted = Object.entries(groupScore)
+    .sort((a, b) => b[1] - a[1]);
+
+  const [primaryKey, primaryScore] = sorted[0];
+  const [secondaryKey, secondaryScore] = sorted[1];
+
+  // 3. วิเคราะห์ความเข้มข้น (Intensity)
+  // ถ้าคะแนนห่างกันมาก = ชัดเจน, ถ้าใกล้กัน = มีความขัดแย้งหรือซับซ้อนในตัว
+  const isComplex = (primaryScore - secondaryScore) <= 1;
+
+  return {
+    primary: primaryKey,
+    secondary: secondaryKey,
+    isComplex,
+    scores: groupScore
+  };
+};
+
+export const secondaryNarratives = {
+  energy: "ความสงบของคุณช่วยประคองให้มิติด้านอื่นมั่นคงขึ้น",
+  freedom: "อิสระที่คุณต้องการ เป็นแรงขับสำคัญที่ทำให้คุณแตกต่าง",
+  connection: "ความใส่ใจคนรอบข้างทำให้เป้าหมายของคุณมีความเป็นมนุษย์มากขึ้น",
+  meaning: "การค้นหาความหมายทำให้ทุกอย่างที่คุณทำมีน้ำหนักและคุณค่า",
+  thinking: "ความช่างคิดทำให้คุณตัดสินใจได้อย่างเฉียบคมและลึกซึ้ง",
+  selfWorth: "ความต้องการพิสูจน์ตนเองเป็นเชื้อเพลิงชั้นดีที่ทำให้คุณไม่หยุดนิ่ง"
 };
 
 export const resultNarrative = {
