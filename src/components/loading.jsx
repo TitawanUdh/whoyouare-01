@@ -3,8 +3,6 @@ import { Button, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import AdsBook01 from "../assets/images/ads-book-1.jpg";
 import AdsBook06 from "../assets/images/ads-book-6.jpg";
-import AdsBook07 from "../assets/images/ads-book-7.jpg";
-import AdsBook08 from "../assets/images/ads-book-8.jpg";
 
 export default function LoadingResult() {
   const navigate = useNavigate();
@@ -13,8 +11,6 @@ export default function LoadingResult() {
   const adsImages = [
     AdsBook01,
     AdsBook06,
-    AdsBook07,
-    AdsBook08,
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
