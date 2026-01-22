@@ -20,18 +20,7 @@ export const traitGroups = {
   ],
 };
 
-// export const analyzeResult = (score) => {
-//   const groupScore = {};
 
-//   Object.entries(traitGroups).forEach(([group, traits]) => {
-//     groupScore[group] = traits.reduce(
-//       (sum, trait) => sum + (score[trait] || 0),
-//       0,
-//     );
-//   });
-
-//   return Object.entries(groupScore).sort((a, b) => b[1] - a[1])[0];
-// };
 
 export const analyzeResult = (answers) => {
   const groupScore = {
@@ -48,15 +37,12 @@ export const analyzeResult = (answers) => {
     });
   });
 
-  // 2. เรียงลำดับกลุ่มที่ได้คะแนนสูงสุด 2 อันดับ
   const sorted = Object.entries(groupScore)
     .sort((a, b) => b[1] - a[1]);
 
   const [primaryKey, primaryScore] = sorted[0];
   const [secondaryKey, secondaryScore] = sorted[1];
 
-  // 3. วิเคราะห์ความเข้มข้น (Intensity)
-  // ถ้าคะแนนห่างกันมาก = ชัดเจน, ถ้าใกล้กัน = มีความขัดแย้งหรือซับซ้อนในตัว
   const isComplex = (primaryScore - secondaryScore) <= 1;
 
   return {

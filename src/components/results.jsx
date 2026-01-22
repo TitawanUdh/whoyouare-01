@@ -1,5 +1,4 @@
-import { Button, Image } from "react-bootstrap";
-// นำเข้า secondaryNarratives เพิ่มเติม (ถ้าแยกไฟล์ไว้อย่าลืม import)
+import { Image } from "react-bootstrap";
 import { analyzeResult, resultNarrative } from "../utils/analyzeResult"; 
 import "./Result.css";
 import { useEffect, useMemo, useState } from "react";
