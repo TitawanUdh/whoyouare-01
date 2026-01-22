@@ -8,7 +8,6 @@ export default function LoadingResult() {
   const [countdown, setCountdown] = useState(8);
   const [phase, setPhase] = useState("loading");
 
-
   useEffect(() => {
     const timer1 = setTimeout(() => {
       setPhase("dissolve"); // เริ่มสลาย
@@ -32,6 +31,9 @@ export default function LoadingResult() {
     return () => clearTimeout(timer);
   }, [countdown]);
 
+  const handleCloseAds = () => {
+    navigate("/result"); // เด้งไปหน้าถัดไป
+  };
   return (
     <div className="loading-page d-flex flex-column justify-content-center align-items-center">
       {/* 🔹 โฆษณา */}
@@ -42,27 +44,43 @@ export default function LoadingResult() {
 
       <div className="fog fog1" />
       <div className="fog fog2" />
-      <a
-        href="https://s.shopee.co.th/AUnx5oAs34"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="ads-link"
-      >
-        <div className="ad-box">
-          <h2 className="mt-3">เคยถามตัวเองไหม ?</h2>
-          <p className="ads-text">  เรามีชีวิตอยู่เพื่ออะไร คำถามนี้อาจไม่มีคำตอบตายตัว แต่แน่นอนว่า "ถึงเราจะเลือกเกิดไม่ได้ แต่เราเลือกที่จะมีชีวิตที่ดีได้"</p>
 
-          <Image
-            src={AdsBook01}
-            alt="ads"
-            className="ads-image"
-          />
-
+      <div className="ad-box">
+        <div className="d-flex justify-content-end">
+          <span className="ads-label">
+            {countdown > 0 ? (
+              `${countdown}`
+            ) : (
+              <Button
+                className="close-btn"
+                variant="outline-light"
+                onClick={handleCloseAds}
+                aria-label="close"
+              >
+                ✕
+              </Button>
+            )}
+          </span>{" "}
+        </div>
+        <h2 className="mt-3">เคยถามตัวเองไหม ?</h2>
+        <p className="ads-text">
+          {" "}
+          เรามีชีวิตอยู่เพื่ออะไร คำถามนี้อาจไม่มีคำตอบตายตัว แต่แน่นอนว่า
+          "ถึงเราจะเลือกเกิดไม่ได้ แต่เราเลือกที่จะมีชีวิตที่ดีได้"
+        </p>
+<a
+          href="https://s.shopee.co.th/AUnx5oAs34"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ads-link"
+        >
+        <Image src={AdsBook01} alt="ads" className="ads-image" />
+        
           <div className="d-flex justify-content-center my-3">
             <Button className="ads-button">ดูเพิ่มเติม</Button>
-          </div>
-        </div>
-      </a>
+          </div>{" "}
+        </a>
+      </div>
 
       <div className="reveal-wrapper d-flex flex-column justify-content-center align-items-center pt-5">
         {phase === "loading" && (
@@ -82,7 +100,7 @@ export default function LoadingResult() {
             className="reveal-button reveal"
             onClick={() => navigate("/result")}
           >
-            เปิดเผยผลลัพธ์
+            เผยความลับตัวตน
           </Button>
         )}
       </div>
