@@ -267,12 +267,24 @@
   padding: 16px;
   text-align: center;
   box-shadow: #bcc6f350 0px 10px 30px;
+width: 100%;
+max-width: 480px;
+  margin: 0 auto;
 }
+
+/* .img-ads{
+  max-width: 150px;
+} */
 
 .ad-box img {
   width: 100%;
-  border-radius: 12px;
+  max-width: 240px; /* 👈 สำคัญ */
+  border-radius: 14px;
+  margin: 0 auto;
+  display: block;
+  transition: transform 0.4s ease, opacity 0.4s ease;
 }
+
 
 .loading-box {
   text-align: center;
@@ -387,23 +399,24 @@
 }
 
 .ads-text {
-  color: #fff !important; /* ตัวหนังสือขาว */
+  color: #ffffffc2 !important; /* ตัวหนังสือขาว */
   text-decoration: none !important; /* เอาเส้นใต้หาย */
   display: block;
+  font-size: 14px;
+    text-indent: 1.5em;   /* เว้นวรรคย่อหน้าแบบหนังสือ */
+
 }
 
 .ads-button {
   padding: 0.75rem 5rem;
-  font-size: 1.2rem;
+  font-size: 13px !important;
   color: #fff;
   background: linear-gradient(45deg, #cb7711, #fce325e8);
   border-radius: 30px;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(252, 144, 37, 0.4);
-  text-decoration: none;
-  transition: all 0.3s ease;
-  display: inline-block;
-  width: 40%;
+  width: 100px;
+height: 30px;
   border: none !important;
 }
 
@@ -428,7 +441,6 @@
 .ads-link:hover {
   text-decoration: none;
 }
-
 
 .reveal-button {
   width: 140px;
