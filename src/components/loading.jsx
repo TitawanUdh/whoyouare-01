@@ -8,7 +8,6 @@ export default function LoadingResult() {
   const [countdown, setCountdown] = useState(8);
   const [showButton, setShowButton] = useState(false);
   const [phase, setPhase] = useState("loading");
-  // loading | dissolve | reveal
 useEffect(() => {
   const timer1 = setTimeout(() => {
     setPhase("dissolve"); // เริ่มสลาย
@@ -56,26 +55,7 @@ useEffect(() => {
         </div>
       </a>
 
-      {/* 🔮 Loading */}
-      {/* <div className="loading-box mt-5">
-        {!showButton ? (
-          <>
-            <div className="mystic-ring" />
-            <p className="loading-text">
-              กำลังสำรวจชั้นลึกของจิตใจคุณ… ({countdown})
-            </p>
-          </>
-        ) : (
-          <Button
-            className="reveal-button mt-4"
-            onClick={() => navigate("/result")}
-          >
-            <span>
-              เปิดเผยผลลัพธ์
-            </span>
-          </Button>
-        )}
-      </div> */}
+
       <div className="reveal-wrapper d-flex flex-column justify-content-center align-items-center pt-5">
         {phase === "loading" && (
           <div className="reveal-button loading">กำลังประมวลผล…</div>
