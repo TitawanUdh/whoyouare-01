@@ -20,7 +20,7 @@
 /* โครงสร้างหลัก */
 .result-page {
   min-height: 100vh;
-  padding: 20px 16px;
+  padding: 0px 16px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,6 +30,34 @@
   flex-direction: column; /* 👈 บังคับเรียงลงล่าง */
   gap: 1.5rem;
 }
+
+.result-page-1 {
+  min-height: 100vh;
+  padding: 20px  ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition:
+    background 0.6s ease,
+    color 0.6s ease;
+  flex-direction: column; /* 👈 บังคับเรียงลงล่าง */
+  gap: 0rem;
+}
+
+.result-page-2 {
+  min-height: 100vh;
+  padding: 0px 20px 20px 20px ;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  transition:
+    background 0.6s ease,
+    color 0.6s ease;
+  flex-direction: column; /* 👈 บังคับเรียงลงล่าง */
+  margin-top: -40px;
+}
+
 
 .result-card {
   max-width: 520px;
@@ -176,10 +204,7 @@
   visibility: visible !important;
 }
 
-/* ❌ ลบส่วนนี้ด้วย เพราะมันจะทำให้ตอน Export กลายเป็นสีเขียวอ่อนทั้งหมด */
-.exporting {
-  /* background: #f3faef !important; <-- ลบทิ้ง */
-}
+
 
 .exporting * {
   opacity: 1 !important; /* เปลี่ยนจาก 2 เป็น 1 */
