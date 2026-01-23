@@ -33,60 +33,59 @@ const Result = ({ answers, setAnswers }) => {
     const resultToSave = {
       group,
       result: data,
-      rawAnswers: answers, 
+      rawAnswers: answers,
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem("myself-result", JSON.stringify(resultToSave));
   }, [answers, group, data]);
 
-const handleSaveImage = async () => {
-  const element = document.getElementById("result-export");
-  if (!element) return;
+  const handleSaveImage = async () => {
+    const element = document.getElementById("result-export");
+    if (!element) return;
 
-  setIsGenerating(true);
-  
-  // เก็บสีพื้นหลังธีมไว้
-  const computedStyle = window.getComputedStyle(element);
-  const currentBgColor = computedStyle.backgroundColor;
+    setIsGenerating(true);
 
-  element.classList.add("exporting");
+    // เก็บสีพื้นหลังธีมไว้
+    const computedStyle = window.getComputedStyle(element);
+    const currentBgColor = computedStyle.backgroundColor;
 
-  await new Promise((resolve) => setTimeout(resolve, 500));
+    element.classList.add("exporting");
 
-  try {
-    const canvas = await html2canvas(element, {
-      scale: 3, 
-      useCORS: true,
-      backgroundColor: currentBgColor, 
-      logging: false,
-      onclone: (clonedDoc) => {
-        const clonedCard = clonedDoc.querySelector(".result-card");
-        if (clonedCard) {
-          clonedCard.style.background = "#ffffff"; // บังคับการ์ดขาวทึบ
-          clonedCard.style.backdropFilter = "none"; 
-          clonedCard.style.webkitBackdropFilter = "none";
-          clonedCard.style.animation = "none"; // ปิด animation ไม่ให้ภาพฟุ้ง
-        }
-      }
-    });
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
-    const dataUrl = canvas.toDataURL("image/png");
-    
-    const link = document.createElement("a");
-    link.href = dataUrl;
-    link.download = `result-${group}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: currentBgColor,
+        logging: false,
+        onclone: (clonedDoc) => {
+          const clonedCard = clonedDoc.querySelector(".result-card");
+          if (clonedCard) {
+            clonedCard.style.background = "#ffffff"; // บังคับการ์ดขาวทึบ
+            clonedCard.style.backdropFilter = "none";
+            clonedCard.style.webkitBackdropFilter = "none";
+            clonedCard.style.animation = "none"; // ปิด animation ไม่ให้ภาพฟุ้ง
+          }
+        },
+      });
 
-  } catch (err) {
-    console.error(err);
-    alert("ไม่สามารถบันทึกรูปได้");
-  } finally {
-    element.classList.remove("exporting");
-    setIsGenerating(false);
-  }
-};
+      const dataUrl = canvas.toDataURL("image/png");
+
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `result-${group}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error(err);
+      alert("ไม่สามารถบันทึกรูปได้");
+    } finally {
+      element.classList.remove("exporting");
+      setIsGenerating(false);
+    }
+  };
 
   const handleRestart = () => {
     localStorage.removeItem("myself-result");
@@ -97,7 +96,9 @@ const handleSaveImage = async () => {
   if (!group || !data) return <p>ไม่สามารถวิเคราะห์ได้</p>;
 
   return (
-    <div className={`result-page theme-${group}`} id="result-export">
+    <div className={`result-page theme-${group} `} id="result-export">
+      <div className="result-page theme-x" id="result-export">
+
       <div className="result-card">
         <div className="result-header text-center">
           <p className="result-label">ตัวตนหลักของคุณคือ</p>
@@ -128,6 +129,34 @@ const handleSaveImage = async () => {
           </p>
         </div>
 
+
+
+        <div className="result-footer mt-4 text-center">
+          <p style={{ fontSize: "0.8rem", color: "#666" }}>
+            ผลลัพธ์นี้ไม่ใช่คำตัดสิน แต่เป็นเพียงกระจกสะท้อนตัวคุณ
+          </p>
+          <div className="watermark">@whoyouare</div>
+        </div>
+      </div>
+
+      <div className="result-card">
+        <div className="result-section">
+          <h5>อาชีพที่เหมาะกับคุณ</h5>
+          <ul>
+            {data.job?.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="result-section">
+          <h4>สไตล์งานที่ใช่</h4>
+          <ul>
+            {data.style?.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ul>
+        </div>
         <div className="result-section">
           <h4>🌱 จุดแข็ง</h4>
           <ul>
@@ -136,8 +165,15 @@ const handleSaveImage = async () => {
             ))}
           </ul>
         </div>
-
-        <div className="result-actions no-export">
+        <div className="result-section">
+          <h4>🌗 สิ่งที่ควรระวัง</h4>
+          <ul>
+            {analysis.weaknesses.map((w, i) => (
+              <li key={i}>{w}</li>
+            ))}
+          </ul>
+        </div>
+                <div className="result-actions no-export">
           <button
             className="save-btn"
             onClick={handleSaveImage}
@@ -157,7 +193,9 @@ const handleSaveImage = async () => {
           <div className="watermark">@whoyouare</div>
         </div>
       </div>
-    </div>
+      </div>
+      </div>
+    
   );
 };
 
