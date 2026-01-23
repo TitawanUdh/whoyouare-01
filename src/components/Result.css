@@ -353,64 +353,13 @@
   opacity: 1 !important;
 }
 
-.career-section {
-  margin-top: 32px;
-}
 
-.career-title {
-  font-size: 1.1rem;
-  margin-bottom: 12px;
-  font-weight: 600;
+.divider {
+  border: none;
+  height: 1px;
+  background: #e5e5e5;
+  margin: 24px 0;
 }
-
-.career-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-}
-
-.career-card.soft {
-  background: #f7f9f6;
-}
-
-.career-label {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 8px;
-}
-
-.career-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.career-tag {
-  background: #eef3ef;
-  color: #2f4f3f;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-}
-
-.career-style {
-  padding-left: 0;
-  list-style: none;
-  font-size: 0.85rem;
-  color: #444;
-}
-
-.career-style li {
-  margin-bottom: 6px;
-}
-
-.career-secondary {
-  margin-top: 12px;
-  font-size: 0.85rem;
-  color: #555;
-  background: #f0f4f1;
-  padding: 12px;
-  border-radius: 12px;
+.exporting .divider {
+  background: #c0c0c0 !important;
 }

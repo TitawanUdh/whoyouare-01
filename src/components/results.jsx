@@ -97,7 +97,7 @@ const Result = ({ answers, setAnswers }) => {
 
   return (
     <>
-      <div  id="result-export">
+      <div id="result-export">
         <div
           className={`result-page-1 theme-${group} `}
           id="result-export-card"
@@ -132,6 +132,46 @@ const Result = ({ answers, setAnswers }) => {
                 ผสมอยู่ ซึ่งช่วยให้คุณเป็นคนที่มองโลกได้รอบด้านมากขึ้น
               </p>
             </div>
+            <hr className="divider" />
+            <div className="result-section">
+              <h5>อาชีพที่เหมาะกับคุณ</h5>
+              <ul>
+                {data.job?.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
+              </ul>
+            </div>
+            <hr className="divider" />
+
+            <div className="result-section">
+              <h4>สไตล์งานที่ใช่</h4>
+              <ul>
+                {data.style?.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
+              </ul>
+            </div>
+            <hr className="divider" />
+
+            <div className="result-section">
+              <h4>🌱 จุดแข็ง</h4>
+              <ul>
+                {data.strength?.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
+              </ul>
+            </div>
+            <hr className="divider" />
+
+            <div className="result-section">
+              <h4>🌗 สิ่งที่ควรระวัง</h4>
+              <ul>
+                {analysis.weaknesses.map((w, i) => (
+                  <li key={i}>{w}</li>
+                ))}
+              </ul>
+            </div>
+            <hr className="divider" />
 
             <div className="result-actions no-export">
               <Button
@@ -153,51 +193,6 @@ const Result = ({ answers, setAnswers }) => {
               <div className="watermark">@whoyouare</div>
             </div>
           </div>
-        </div>
-
-        <div className={`result-page-2 theme-${group} `}>
-        <div className="result-card">
-          <div className="result-section">
-            <h5>อาชีพที่เหมาะกับคุณ</h5>
-            <ul>
-              {data.job?.map((s, i) => (
-                <li key={i}>{s}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="result-section">
-            <h4>สไตล์งานที่ใช่</h4>
-            <ul>
-              {data.style?.map((s, i) => (
-                <li key={i}>{s}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="result-section">
-            <h4>🌱 จุดแข็ง</h4>
-            <ul>
-              {data.strength?.map((s, i) => (
-                <li key={i}>{s}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="result-section">
-            <h4>🌗 สิ่งที่ควรระวัง</h4>
-            <ul>
-              {analysis.weaknesses.map((w, i) => (
-                <li key={i}>{w}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="result-footer mt-4 text-center">
-            <p style={{ fontSize: "0.8rem", color: "#666" }}>
-              ผลลัพธ์นี้ไม่ใช่คำตัดสิน แต่เป็นเพียงกระจกสะท้อนตัวคุณ
-            </p>
-            <div className="watermark">@whoyouare</div>
-          </div>
-        </div>
         </div>
       </div>
     </>
