@@ -97,7 +97,6 @@ const Result = ({ answers, setAnswers }) => {
 
   return (
     <div className={`result-page theme-${group} `} id="result-export">
-      <div className="result-page theme-x" id="result-export">
 
       <div className="result-card">
         <div className="result-header text-center">
@@ -192,7 +191,6 @@ const Result = ({ answers, setAnswers }) => {
           </p>
           <div className="watermark">@whoyouare</div>
         </div>
-      </div>
       </div>
       </div>
     
