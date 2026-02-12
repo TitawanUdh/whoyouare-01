@@ -363,3 +363,18 @@
 .exporting .divider {
   background: #c0c0c0 !important;
 }
+
+.instagram-btn{
+  background-color: #ffdbdb59 !important;
+  color: #000000 !important;
+  border: none !important;
+  padding: 8px 16px;
+  border-radius: 100px; /* ทรงมน Pill */
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: #1a1a1a28 0px 4px 12px;
+}

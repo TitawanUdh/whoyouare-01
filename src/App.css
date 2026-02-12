@@ -513,3 +513,14 @@ height: 30px;
   }
 }
 
+.instagram-icon {
+  font-size: 24px;
+  color: #E1306C; /* สีหลักของ Instagram */
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+  margin-right: 5px;
+}
+.instagram-icon:hover {
+  transform: scale(1.2);
+  color: #C13584; /* สีเมื่อ hover */
+}

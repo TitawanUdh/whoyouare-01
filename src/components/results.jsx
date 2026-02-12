@@ -4,6 +4,7 @@ import "./Result.css";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas"; // ปลดคอมเมนต์ออก
+import { FaInstagram } from "react-icons/fa6";
 
 const Result = ({ answers, setAnswers }) => {
   const navigate = useNavigate();
@@ -27,24 +28,24 @@ const Result = ({ answers, setAnswers }) => {
   const group = analysis.primary;
   const secondaryGroup = analysis.secondary;
   const data = resultNarrative[group];
-  
+
   useEffect(() => {
-  const finalAnswers =
-    answers?.length > 0 ? answers : savedResult?.rawAnswers || [];
+    const finalAnswers =
+      answers?.length > 0 ? answers : savedResult?.rawAnswers || [];
 
-  if (!finalAnswers.length) return;
+    if (!finalAnswers.length) return;
 
-  if (!data?.title) return;
+    if (!data?.title) return;
 
-  const alreadySent = localStorage.getItem("sheet-sent");
-  if (alreadySent) return;
+    const alreadySent = localStorage.getItem("sheet-sent");
+    if (alreadySent) return;
 
-  console.log("Sending answers:", finalAnswers);
+    console.log("Sending answers:", finalAnswers);
 
-  saveToSheet(finalAnswers, data.title);
+    saveToSheet(finalAnswers, data.title);
 
-  localStorage.setItem("sheet-sent", "true");
-}, [answers, savedResult, data]);
+    localStorage.setItem("sheet-sent", "true");
+  }, [answers, savedResult, data]);
 
   useEffect(() => {
     if (!answers?.length || !group || !data) return;
@@ -105,36 +106,38 @@ const Result = ({ answers, setAnswers }) => {
     }
   };
 
-const handleRestart = () => {
-  localStorage.removeItem("myself-result");
-  localStorage.removeItem("sheet-sent"); // เพิ่มบรรทัดนี้
-  setAnswers([]);
-  navigate("/");
-};
-
+  const handleRestart = () => {
+    localStorage.removeItem("myself-result");
+    localStorage.removeItem("sheet-sent"); // เพิ่มบรรทัดนี้
+    setAnswers([]);
+    navigate("/");
+  };
 
   if (!group || !data) return <p>ไม่สามารถวิเคราะห์ได้</p>;
 
   const saveToSheet = async (answers, result) => {
-  const userId =
-    localStorage.getItem("psychoUserId") ||
-    Math.random().toString(36).substring(2);
+    const userId =
+      localStorage.getItem("psychoUserId") ||
+      Math.random().toString(36).substring(2);
 
-  localStorage.setItem("psychoUserId", userId);
+    localStorage.setItem("psychoUserId", userId);
 
-  await fetch("https://script.google.com/macros/s/AKfycbz-hOM_2tD-WrauCSe55Z8dEMgu8CMqtrc3zdPooFC2GzM3u5IvV18Zaqz1ydOqnn7M/exec", {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      userId,
-      answers,
-      result,
-    }),
-  });
-};
+    await fetch(
+      "https://script.google.com/macros/s/AKfycbz-hOM_2tD-WrauCSe55Z8dEMgu8CMqtrc3zdPooFC2GzM3u5IvV18Zaqz1ydOqnn7M/exec",
+      {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          answers,
+          result,
+        }),
+      },
+    );
+  };
   return (
     <>
       <div id="result-export">
@@ -143,6 +146,12 @@ const handleRestart = () => {
           id="result-export-card"
         >
           <div className="result-card">
+            <div className="d-flex justify-content-end ">
+              <Button className="instagram-btn" href="https://www.instagram.com/whoyouare.official/" target="_blank" rel="noopener noreferrer"> 
+                <FaInstagram className="instagram-icon" />
+                @whoyouare
+              </Button>
+            </div>
             <div className="result-header text-center">
               <p className="result-label">ตัวตนหลักของคุณคือ</p>
               <h2 className="result-title">{data.title}</h2>
