@@ -69,7 +69,7 @@ export default function LoadingResult() {
           "ถึงเราจะเลือกเกิดไม่ได้ แต่เราเลือกที่จะมีชีวิตที่ดีได้"
         </p>
 <a
-          href="https://s.shopee.co.th/AUnx5oAs34"
+          href="https://s.shopee.co.th/6fblha2hLz"
           target="_blank"
           rel="noopener noreferrer"
           className="ads-link"
