@@ -27,6 +27,24 @@ const Result = ({ answers, setAnswers }) => {
   const group = analysis.primary;
   const secondaryGroup = analysis.secondary;
   const data = resultNarrative[group];
+  
+  useEffect(() => {
+  const finalAnswers =
+    answers?.length > 0 ? answers : savedResult?.rawAnswers || [];
+
+  if (!finalAnswers.length) return;
+
+  if (!data?.title) return;
+
+  const alreadySent = localStorage.getItem("sheet-sent");
+  if (alreadySent) return;
+
+  console.log("Sending answers:", finalAnswers);
+
+  saveToSheet(finalAnswers, data.title);
+
+  localStorage.setItem("sheet-sent", "true");
+}, [answers, savedResult, data]);
 
   useEffect(() => {
     if (!answers?.length || !group || !data) return;
@@ -87,14 +105,36 @@ const Result = ({ answers, setAnswers }) => {
     }
   };
 
-  const handleRestart = () => {
-    localStorage.removeItem("myself-result");
-    setAnswers([]);
-    navigate("/");
-  };
+const handleRestart = () => {
+  localStorage.removeItem("myself-result");
+  localStorage.removeItem("sheet-sent"); // เพิ่มบรรทัดนี้
+  setAnswers([]);
+  navigate("/");
+};
+
 
   if (!group || !data) return <p>ไม่สามารถวิเคราะห์ได้</p>;
 
+  const saveToSheet = async (answers, result) => {
+  const userId =
+    localStorage.getItem("psychoUserId") ||
+    Math.random().toString(36).substring(2);
+
+  localStorage.setItem("psychoUserId", userId);
+
+  await fetch("https://script.google.com/macros/s/AKfycbz-hOM_2tD-WrauCSe55Z8dEMgu8CMqtrc3zdPooFC2GzM3u5IvV18Zaqz1ydOqnn7M/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId,
+      answers,
+      result,
+    }),
+  });
+};
   return (
     <>
       <div id="result-export">
