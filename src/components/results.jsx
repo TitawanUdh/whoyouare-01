@@ -28,6 +28,7 @@ const Result = ({ answers, setAnswers }) => {
   const group = analysis.primary;
   const secondaryGroup = analysis.secondary;
   const data = resultNarrative[group];
+console.log('data', data);
 
   useEffect(() => {
     const finalAnswers =
